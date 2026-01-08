@@ -1,18 +1,24 @@
-import {Controller, Post, Get, Body} from '@nestjs/common';
+import {Controller, Post, Get, Body, HttpCode, HttpStatus, Req, Param, Res} from '@nestjs/common';
 import {ShortenerService} from './shortener.service';
 
-@Controller('shortener')
+@Controller()
 export class ShortenerController {
 
     constructor(private readonly service: ShortenerService) {}
 
     @Post()
-    createShortUrl(@Body() originalUrl: string) {
+    @HttpCode(HttpStatus.CREATED)
+    createShortUrl(@Body('originalUrl') originalUrl: string) {
+        console.log('Received URL to shorten:', originalUrl);
         return this.service.createShortUrl(originalUrl);
     }
 
-    @Get()
-    getOriginalUrl(@Body() shortCode: string) {
-        return this.service.getOriginalUrl(shortCode);
+    @Get(':shortCode')
+    @HttpCode(HttpStatus.FOUND) //moves temporarily
+    async getOriginalUrl(@Param('shortCode') shortCode: string, 
+    @Res() res) {
+        console.log('Received short code to resolve:', shortCode);
+        const originalUrl = await this.service.getOriginalUrl(shortCode);
+        return res.redirect(originalUrl);
     }
 }

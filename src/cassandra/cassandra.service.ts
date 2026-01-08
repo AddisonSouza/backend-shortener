@@ -8,13 +8,17 @@ export class CassandraService implements OnModuleInit, OnModuleDestroy {
 
     async onModuleInit() {
         this.client = new Client({
-            contactPoints: [''],
-            localDataCenter: '',
-            keyspace: '',
+            contactPoints: [process.env.CASSANDRA_ADRESS || 'localhost'],
+            localDataCenter: process.env.CASSANDRA_LOCAL_DATA_CENTER || 'datacenter1',
+            keyspace: process.env.CASSANDRA_KEYSPACE || 'default_keyspace',
         });
 
-        await this.client.connect();
-        console.log('Connected to Cassandra');
+        try {
+            await this.client.connect();
+            console.log('Connected to Cassandra');
+        } catch (error) {
+            console.error('Failed to connect to Cassandra', error);
+        }
     }
 
     getClient(): Client {
