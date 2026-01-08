@@ -1,25 +1,54 @@
 import { Injectable } from "@nestjs/common";
 import { ShortenerRepository } from "./shortener.repository";
 import { ApiResponse } from "src/common/api-response";
+import Hashids from 'hashids';
+import { BASE_62, KEY_SHORTENER_REDIS } from "./shortener.constants";
+import { RedisService } from "src/redis/redis.service";
 
 @Injectable()
 export class ShortenerService {
-    constructor(private readonly repository: ShortenerRepository,) {}
+    private hashids: Hashids;
+    constructor(
+        private readonly repository: ShortenerRepository,
+        private readonly redisService: RedisService) 
+    {
+        this.hashids = new Hashids(process.env.SALT_BASE_62, 6, BASE_62);
+    }
 
-    async createShortUrl(originalUrl: string): Promise<ApiResponse<string>> {
-        const shortCode = Math.random().toString(36).substring(2, 8);
-        await this.repository.createShortUrl(originalUrl, shortCode);
-        return ApiResponse.success(shortCode, "Short URL created successfully");
+    async createShortUrl(originalUrl: string, baseUrl: string): Promise<ApiResponse<string>> {
+        try {
+            const shortCode = await this.generateShortCode();
+            console.log('Generated short code:', shortCode);
+            await this.repository.createShortUrl(originalUrl, await shortCode);
+            const shortUrl = `${baseUrl}/${shortCode}`;
+            return ApiResponse.success(shortUrl, "Short URL created successfully");
+        } catch (error) {
+            console.error('Error creating short URL:', error);
+            return ApiResponse.failure("Failed to create short URL");
+        }
+        
     }
 
     async getOriginalUrl(shortCode: string): Promise<string | null> {
-        const originalUrl = await this.repository.getOriginalUrl(shortCode);
-        if (originalUrl) {
-            console.log('Original URL found:', originalUrl);
-            return originalUrl
-        } else {
-            console.log('Original URL not found for short code:', shortCode);
-            return "Url Not Found";
+        try {
+            const originalUrl = await this.repository.getOriginalUrl(shortCode);
+            if (originalUrl) {
+                return originalUrl
+            } else {
+                return "Url Not Found";
+            }
+        } catch (error) {
+            console.error('Error retrieving original URL:', error);
+            return null;
         }
+    }
+
+    private async generateShortCode(): Promise<string> {
+        const id = await this.redisService.incr(KEY_SHORTENER_REDIS);
+        console.log('Generated unique ID from Redis:', id);
+        if (id === null) 
+            throw new Error('Failed to generate unique ID');
+        
+        return this.hashids.encode(id);
     }
 }

@@ -8,15 +8,19 @@ export class ShortenerController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    createShortUrl(@Body('originalUrl') originalUrl: string) {
+    createShortUrl(@Body('originalUrl') originalUrl: string, 
+    @Req() req
+    ) {
         console.log('Received URL to shorten:', originalUrl);
-        return this.service.createShortUrl(originalUrl);
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        return this.service.createShortUrl(originalUrl, baseUrl);
     }
 
     @Get(':shortCode')
     @HttpCode(HttpStatus.FOUND) //moves temporarily
     async getOriginalUrl(@Param('shortCode') shortCode: string, 
-    @Res() res) {
+    @Res() res
+    ) {
         console.log('Received short code to resolve:', shortCode);
         const originalUrl = await this.service.getOriginalUrl(shortCode);
         return res.redirect(originalUrl);
