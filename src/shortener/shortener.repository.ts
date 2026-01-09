@@ -7,10 +7,10 @@ export class ShortenerRepository {
         private readonly cassandraService: CassandraService,
     ) {}
 
-    async createShortUrl(originalUrl: string, shortCode: string): Promise<void> {
+    async createShortUrl(originalUrl: string, shortCode: string, timestamp: Date): Promise<void> {
         const client = this.cassandraService.getClient();
-        const query = 'INSERT INTO short_urls (short_code, original_url) VALUES (?, ?)';
-        await client.execute(query, [shortCode, originalUrl], { prepare: true });
+        const query = 'INSERT INTO short_urls (short_code, original_url, created_at) VALUES (?, ?, ?)';
+        await client.execute(query, [shortCode, originalUrl, timestamp], { prepare: true });
     }
 
     async getOriginalUrl(shortCode: string): Promise<string | null> {
