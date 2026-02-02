@@ -61,6 +61,10 @@ export class EnvironmentVariables {
   @IsNumber()
   @IsOptional()
   CORS_MAX_AGE: number = 3600;
+
+  @IsString()
+  @IsNotEmpty()
+  API_KEY: string;
 }
 
 export function validate(config: Record<string, unknown>) {

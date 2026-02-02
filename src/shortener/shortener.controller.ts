@@ -1,6 +1,6 @@
-import {Controller, Post, Get, Body, HttpCode, HttpStatus, Req, Param, Res} from '@nestjs/common';
+import {Controller, Post, Get, Body, HttpCode, HttpStatus, Req, Param, Res, UseGuards} from '@nestjs/common';
 import {ShortenerService} from './shortener.service';
-import { DataUtil } from 'src/common/data.util';
+import { ApiKeyGuard } from 'src/common/api-key.guard';
 
 @Controller()
 export class ShortenerController {
@@ -8,6 +8,7 @@ export class ShortenerController {
     constructor(private readonly service: ShortenerService) {}
 
     @Post()
+    @UseGuards(ApiKeyGuard)
     @HttpCode(HttpStatus.CREATED)
     createShortUrl(@Body('originalUrl') originalUrl: string, 
     @Req() req
