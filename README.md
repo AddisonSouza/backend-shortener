@@ -1,98 +1,314 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <img src="https://img.icons8.com/fluency/96/link.png" width="100" alt="URL Shortener Logo"/>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h1 align="center">🔗 Backend URL Shortener</h1>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  <strong>Um encurtador de URLs de alta performance construído para escalar</strong>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+<p align="center">
+  <img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS"/>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/Cassandra-1287B1?style=for-the-badge&logo=apache-cassandra&logoColor=white" alt="Cassandra"/>
+  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/>
+</p>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<p align="center">
+  <img src="https://img.shields.io/badge/version-0.0.1-blue?style=flat-square" alt="Version"/>
+  <img src="https://img.shields.io/badge/license-UNLICENSED-red?style=flat-square" alt="License"/>
+  <img src="https://img.shields.io/badge/node-%3E%3D18-green?style=flat-square" alt="Node"/>
+</p>
 
-## Project setup
+---
 
-```bash
-$ npm install
+## 📋 Índice
+
+- [🎯 O que é este projeto?](#-o-que-é-este-projeto)
+- [✨ Funcionalidades](#-funcionalidades)
+- [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
+- [🏗️ Arquitetura](#️-arquitetura)
+- [🚀 Como Rodar](#-como-rodar)
+- [📡 API Endpoints](#-api-endpoints)
+- [🧗 Desafios & Soluções](#-desafios--soluções)
+
+---
+
+## 🎯 O que é este projeto?
+
+Este é um **serviço de encurtamento de URLs** robusto e escalável que transforma URLs longas em links curtos e memoráveis. Projetado com foco em **alta performance** e **escalabilidade horizontal**, utilizando as melhores práticas de arquitetura de microsserviços.
+
+```
+https://www.exemplo.com/pagina/muito/longa/com/parametros?id=123&ref=456
+                              ↓
+                    http://localhost:3000/a1B2c3
 ```
 
-## Compile and run the project
+### 💡 Por que usar?
 
-```bash
-# development
-$ npm run start
+- **🚀 Performance**: Cache Redis para respostas em milissegundos
+- **📈 Escalável**: Cassandra como banco distribuído, pronto para milhões de URLs
+- **🔒 Seguro**: Proteção por API Key nos endpoints de criação
+- **🐳 Containerizado**: Deploy com um único comando usando Docker
 
-# watch mode
-$ npm run start:dev
+---
 
-# production mode
-$ npm run start:prod
+## ✨ Funcionalidades
+
+| Feature | Descrição |
+|---------|-----------|
+| 🔗 **Encurtamento** | Gera códigos únicos de 6+ caracteres usando Base62 |
+| ⚡ **Redirecionamento Rápido** | Cache Redis com TTL de 24h para máxima velocidade |
+| 🔐 **API Key Guard** | Proteção contra uso não autorizado |
+| 🌐 **CORS Configurável** | Suporte completo para diferentes origens |
+| 📊 **IDs Sequenciais** | Redis garante unicidade com `INCR` atômico |
+| 🐳 **Docker Ready** | Infraestrutura completa com docker-compose |
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+### Core
+| Tecnologia | Versão | Propósito |
+|------------|--------|-----------|
+| **NestJS** | v11 | Framework backend modular e escalável |
+| **TypeScript** | v5.7 | Tipagem estática e melhor DX |
+| **Node.js** | ≥18 | Runtime JavaScript |
+
+### Banco de Dados & Cache
+| Tecnologia | Versão | Propósito |
+|------------|--------|-----------|
+| **Apache Cassandra** | v5 | Banco NoSQL distribuído para armazenamento persistente |
+| **Redis** | v7 | Cache em memória + geração de IDs atômicos |
+
+### Bibliotecas
+| Biblioteca | Propósito |
+|------------|-----------|
+| **Hashids** | Encoding de IDs em strings Base62 únicas |
+| **ioredis** | Cliente Redis de alta performance |
+| **cassandra-driver** | Driver oficial do Cassandra para Node.js |
+| **class-validator** | Validação de DTOs |
+
+### DevOps
+| Ferramenta | Propósito |
+|------------|-----------|
+| **Docker** | Containerização da aplicação |
+| **Docker Compose** | Orquestração de múltiplos containers |
+
+---
+
+## 🏗️ Arquitetura
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        CLIENT REQUEST                           │
+└─────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    🛡️ API KEY GUARD                             │
+│              (Protege endpoints de criação)                     │
+└─────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   📦 SHORTENER CONTROLLER                       │
+│         POST / → Criar URL    |    GET /:code → Redirect        │
+└─────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    ⚙️ SHORTENER SERVICE                          │
+│    • Gera short codes com Hashids (Base62)                      │
+│    • Gerencia cache Redis                                       │
+│    • Orquestra persistência                                     │
+└─────────────────────────────────────────────────────────────────┘
+                    │                         │
+                    ▼                         ▼
+┌──────────────────────────┐    ┌──────────────────────────┐
+│      🗃️ CASSANDRA         │    │      ⚡ REDIS              │
+│  • Persistência de URLs  │    │  • Cache (TTL 24h)       │
+│  • Alta disponibilidade  │    │  • ID Sequencial (INCR)  │
+│  • Escalabilidade        │    │  • Respostas rápidas     │
+└──────────────────────────┘    └──────────────────────────┘
 ```
 
-## Run tests
+---
+
+## 🚀 Como Rodar
+
+### Pré-requisitos
+
+- [Docker](https://www.docker.com/get-started) instalado
+- [Docker Compose](https://docs.docker.com/compose/install/) instalado
+
+### 🐳 Método Rápido (Recomendado)
 
 ```bash
-# unit tests
-$ npm run test
+# Clone o repositório
+git clone <seu-repositorio>
+cd backend-shortener
 
-# e2e tests
-$ npm run test:e2e
+# Suba toda a stack com Docker
+docker-compose up -d
 
-# test coverage
-$ npm run test:cov
+# A aplicação estará disponível em:
+# http://localhost:3000
 ```
 
-## Deployment
+> ⏳ **Nota**: O Cassandra pode levar ~60 segundos para inicializar completamente.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 💻 Desenvolvimento Local
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente
+cp local.env.example .env
+
+# Suba apenas os serviços de infraestrutura
+docker-compose up -d cassandra redis cassandra-init
+
+# Rode a aplicação em modo desenvolvimento
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 📝 Variáveis de Ambiente
 
-## Resources
+| Variável | Descrição | Default |
+|----------|-----------|---------|
+| `PORT` | Porta do servidor | `3000` |
+| `CASSANDRA_ADRESS` | Host do Cassandra | `localhost` |
+| `CASSANDRA_KEYSPACE` | Keyspace do Cassandra | `shortener` |
+| `REDIS_HOST` | Host do Redis | `localhost` |
+| `REDIS_PORT` | Porta do Redis | `6379` |
+| `SALT_BASE_62` | Salt para geração de hashes | `defaultsalt` |
+| `API_KEY` | Chave de API para proteção | `calamiao` |
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 📡 API Endpoints
 
-## Support
+### Criar URL Curta
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```http
+POST /
+Content-Type: application/json
+x-api-key: sua-api-key
 
-## Stay in touch
+{
+  "originalUrl": "https://www.exemplo.com/url-muito-longa"
+}
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+**Resposta (201 Created):**
+```json
+{
+  "success": true,
+  "data": "http://localhost:3000/a1B2c3",
+  "message": "Short URL created successfully"
+}
+```
 
-## License
+### Acessar URL Original
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```http
+GET /:shortCode
+```
+
+**Resposta:** Redirecionamento 302 para a URL original
+
+---
+
+## 🧗 Desafios & Soluções
+
+### 1. 🔢 Geração de IDs Únicos em Sistema Distribuído
+
+**Desafio:** Garantir IDs únicos sem colisões em um ambiente que pode escalar horizontalmente.
+
+**Solução:** Utilizamos o comando `INCR` do Redis, que é **atômico** e garante sequencialidade mesmo com múltiplas instâncias da aplicação. O ID numérico é então convertido para Base62 usando Hashids.
+
+```typescript
+private async generateShortCode(): Promise<string> {
+  const id = await this.redisService.incr(KEY_SHORTENER_REDIS);
+  return this.hashids.encode(id);
+}
+```
+
+---
+
+### 2. ⚡ Performance em Leituras de Alta Frequência
+
+**Desafio:** URLs curtas são acessadas muito mais vezes do que são criadas (proporção ~100:1). Como otimizar?
+
+**Solução:** Implementamos uma estratégia de **cache-aside** com Redis:
+- ✅ Cache hit → Resposta em ~1ms
+- ❌ Cache miss → Busca no Cassandra + popula cache (TTL 24h)
+
+```typescript
+async getOriginalUrl(shortCode: string): Promise<string | null> {
+  const cachedUrl = await this.redisService.get(REDIS_KEY_PREFIX + shortCode);
+  if (cachedUrl) return cachedUrl; // Cache HIT! 🚀
+  
+  const originalUrl = await this.repository.getOriginalUrl(shortCode);
+  this.redisService.set(REDIS_KEY_PREFIX + shortCode, originalUrl, REDIS_EXPIRATION_TIME);
+  return originalUrl;
+}
+```
+
+---
+
+### 3. 🔒 Proteção Contra Uso Indevido
+
+**Desafio:** Evitar que qualquer pessoa crie URLs curtas sem autorização, prevenindo spam e abuso.
+
+**Solução:** Implementamos um Guard customizado do NestJS que valida a presença e validade de uma API Key no header `x-api-key` antes de permitir a criação de novas URLs.
+
+---
+
+### 4. 🐳 Orquestração de Serviços com Dependências
+
+**Desafio:** Cassandra demora para inicializar e a aplicação falhava ao tentar conectar antes do banco estar pronto.
+
+**Solução:** Utilizamos **healthchecks** e **depends_on com conditions** no Docker Compose:
+
+```yaml
+app:
+  depends_on:
+    cassandra:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+```
+
+---
+
+### 5. 🌐 CORS para Múltiplas Origens
+
+**Desafio:** Suportar diferentes ambientes de frontend (dev, staging, prod) com origens variadas.
+
+**Solução:** CORS totalmente configurável via variáveis de ambiente, permitindo múltiplas origens separadas por vírgula.
+
+---
+
+## 📜 Scripts Disponíveis
+
+```bash
+npm run start          # Inicia em produção
+npm run start:dev      # Inicia em modo watch (desenvolvimento)
+npm run start:debug    # Inicia com debugger
+npm run build          # Compila o projeto
+npm run lint           # Executa ESLint
+npm run test           # Executa testes unitários
+npm run test:e2e       # Executa testes e2e
+npm run test:cov       # Gera relatório de cobertura
+```
+
+---
+
+<p align="center">
+  <sub>Feito com ❤️ usando NestJS, Cassandra e Redis</sub>
+</p>
